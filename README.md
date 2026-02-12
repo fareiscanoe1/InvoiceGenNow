@@ -62,6 +62,22 @@ export TWILIO_FROM_NUMBER="+14165550100"
 
 If providers are not configured, sign-link creation still works, but send will return a clear setup error.
 
+## GitHub Pages Hosting
+
+This repo is configured to auto-deploy to GitHub Pages from `main` via:
+
+- `.github/workflows/deploy-pages.yml`
+
+After pushing:
+
+1. Open repository **Settings** -> **Pages**
+2. Set **Build and deployment** source to **GitHub Actions**
+3. Wait for the **Deploy GitHub Pages** workflow to finish
+4. Your site URL will be:
+   - `https://fareiscanoe1.github.io/InvoiceGenNow/`
+
+Note: GitHub Pages hosts the static frontend only. Backend routes (`server.js`, `/api/*`) need a separate server host.
+
 ## Files
 
 - `index.html`
