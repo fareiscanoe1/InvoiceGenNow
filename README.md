@@ -15,7 +15,7 @@ A dark, split-pane invoice + contract generator with live preview and backend-po
   - Contract details form (all Canadian provinces/territories, parties, service, fee, due days, revisions)
   - Live contract preview
   - Provider + client digital signing (draw or type)
-  - Remote-ready workflow: open send modal, collect client + owner contacts, send secure client sign link via email/SMS
+  - Remote-ready workflow: export a client-ready PDF copy
   - Signed-copy notifications: when client signs, both client and owner receive a signed-copy link (email/SMS if configured)
   - Re-sign support: each client re-sign updates saved signature + signed timestamp
   - Contract PDF download
@@ -26,7 +26,7 @@ A dark, split-pane invoice + contract generator with live preview and backend-po
 1. Install dependencies:
 
    ```bash
-   cd /Users/fareiscanoe/Desktop/auto_invoice_generator
+   cd InvoiceGenNow
    npm install
    ```
 
@@ -39,10 +39,7 @@ A dark, split-pane invoice + contract generator with live preview and backend-po
 3. Open [http://localhost:8787](http://localhost:8787)
 4. In **Contract Generator**:
    - sign as provider first
-   - click **Send to Client** and fill client + owner contacts in the modal
-   - click **Send to Client**
-   - client signs in standalone portal
-   - click **Refresh Client Signature** in company app to pull saved client signature + latest signed time
+   - use **Export Client PDF** to send a client-ready copy
 
 ## Delivery Provider Setup (Email/SMS)
 
@@ -67,10 +64,10 @@ If providers are not configured, sign-link creation still works, but send will r
 
 ## Files
 
-- `/Users/fareiscanoe/Desktop/auto_invoice_generator/index.html`
-- `/Users/fareiscanoe/Desktop/auto_invoice_generator/styles.css`
-- `/Users/fareiscanoe/Desktop/auto_invoice_generator/script.js`
-- `/Users/fareiscanoe/Desktop/auto_invoice_generator/server.js`
-- `/Users/fareiscanoe/Desktop/auto_invoice_generator/client-sign.html`
-- `/Users/fareiscanoe/Desktop/auto_invoice_generator/client-sign.css`
-- `/Users/fareiscanoe/Desktop/auto_invoice_generator/client-sign.js`
+- `index.html`
+- `styles.css`
+- `script.js`
+- `server.js`
+- `client-sign.html`
+- `client-sign.css`
+- `client-sign.js`
