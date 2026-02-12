@@ -1,0 +1,805 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InvoiceGenNow - Free Invoice & Contract Generator</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="hero">
+        <h1>InvoiceGenNow</h1>
+        <p>
+          Free online invoice generator and contract generator. Create, preview,
+          and download professional invoices and service contracts in seconds.
+        </p>
+      </header>
+
+      <div class="feature-switch" role="tablist" aria-label="Generator type">
+        <button
+          id="showInvoiceFeatureBtn"
+          class="feature-switch-btn active"
+          type="button"
+          data-feature="invoice"
+          role="tab"
+        >
+          Invoice Generator
+        </button>
+        <button
+          id="showContractFeatureBtn"
+          class="feature-switch-btn"
+          type="button"
+          data-feature="contract"
+          role="tab"
+        >
+          Contract Generator
+        </button>
+      </div>
+
+      <main id="invoiceFeature" class="workspace" aria-label="Invoice editor">
+        <section class="panel panel-form" aria-label="Invoice details">
+          <header class="panel-header">
+            <h2>Invoice Details</h2>
+          </header>
+
+          <div class="tabs" role="tablist" aria-label="Invoice sections">
+            <button class="tab-btn active" data-tab="products" role="tab">
+              <i data-lucide="package"></i>
+              <span>Products</span>
+            </button>
+            <button class="tab-btn" data-tab="customer" role="tab">
+              <i data-lucide="user-round"></i>
+              <span>Customer</span>
+            </button>
+            <button class="tab-btn" data-tab="invoice" role="tab">
+              <i data-lucide="file-text"></i>
+              <span>Invoice</span>
+            </button>
+            <button class="tab-btn" data-tab="payment" role="tab">
+              <i data-lucide="wallet-cards"></i>
+              <span>Payment</span>
+            </button>
+            <button class="tab-btn" data-tab="company" role="tab">
+              <i data-lucide="building-2"></i>
+              <span>Company</span>
+            </button>
+          </div>
+
+          <form id="invoiceForm" novalidate>
+            <section class="form-section active" data-section="products">
+              <div class="section-top-row">
+                <h3>Products</h3>
+                <button id="addItemBtn" class="btn btn-primary" type="button">
+                  + Add Service
+                </button>
+              </div>
+
+              <div id="lineItemsHeader" class="line-items-header" aria-hidden="true">
+                <span>Name</span>
+                <span>Model/SKU</span>
+                <span>Hours</span>
+                <span>Rate (/Hour)</span>
+                <span></span>
+              </div>
+              <div id="lineItems" class="line-items"></div>
+
+              <div class="form-grid two-col">
+                <label>
+                  Shipping Cost (Optional)
+                  <input
+                    id="shippingCost"
+                    type="number"
+                    inputmode="decimal"
+                    min="0"
+                    step="0.01"
+                    placeholder="0.00"
+                  />
+                </label>
+                <label>
+                  Discount (Optional)
+                  <input
+                    id="discount"
+                    type="number"
+                    inputmode="decimal"
+                    min="0"
+                    step="0.01"
+                    placeholder="0.00"
+                  />
+                </label>
+              </div>
+
+              <div class="form-grid two-col tax-grid">
+                <label>
+                  Tax Rate
+                  <input
+                    id="taxRate"
+                    type="number"
+                    inputmode="decimal"
+                    min="0"
+                    step="0.01"
+                    placeholder="0"
+                  />
+                </label>
+                <fieldset>
+                  <legend>Tax Type</legend>
+                  <div class="segmented" id="taxTypeControl">
+                    <button
+                      type="button"
+                      class="seg-btn active"
+                      data-value="percent"
+                    >
+                      %
+                    </button>
+                    <button type="button" class="seg-btn" data-value="fixed">
+                      Number
+                    </button>
+                  </div>
+                </fieldset>
+              </div>
+
+              <label class="switch-row">
+                <input id="taxIncluded" type="checkbox" />
+                <span>Tax included in prices</span>
+              </label>
+              <p class="helper">Tax will be added to the subtotal unless included.</p>
+
+              <fieldset class="billing-mode-fieldset">
+                <legend>Invoice Mode</legend>
+                <div class="segmented" id="billingModeControl">
+                  <button type="button" class="seg-btn active" data-value="hours">
+                    Hours
+                  </button>
+                  <button type="button" class="seg-btn" data-value="fixed">
+                    Fixed Work
+                  </button>
+                </div>
+              </fieldset>
+            </section>
+
+            <section class="form-section" data-section="customer">
+              <h3>Customer</h3>
+              <div class="section-divider"></div>
+
+              <button id="selectCustomerBtn" class="btn btn-subtle" type="button">
+                <i data-lucide="users"></i>
+                <span>Select Customer</span>
+              </button>
+
+              <div class="form-grid">
+                <label>
+                  Customer | Company Name
+                  <input
+                    id="customerDisplay"
+                    type="text"
+                    placeholder="Customer | Company Name"
+                  />
+                </label>
+                <label>
+                  Identifier Number
+                  <input
+                    id="customerIdentifier"
+                    type="text"
+                    placeholder="Identifier Number"
+                  />
+                </label>
+              </div>
+
+              <div class="form-grid two-col">
+                <label>
+                  Address
+                  <input id="customerAddress" type="text" placeholder="Address" />
+                </label>
+                <label>
+                  Zip Code
+                  <input id="customerZip" type="text" placeholder="Zip Code" />
+                </label>
+                <label>
+                  Phone
+                  <input id="customerPhone" type="text" placeholder="Phone" />
+                </label>
+                <label>
+                  Email
+                  <input
+                    id="customerEmail"
+                    type="email"
+                    placeholder="Email"
+                  />
+                </label>
+              </div>
+            </section>
+
+            <section class="form-section" data-section="invoice">
+              <h3>Invoice Details</h3>
+              <div class="section-divider"></div>
+
+              <div class="form-grid">
+                <label>
+                  Invoice Number
+                  <div class="inline-action">
+                    <input id="invoiceNumber" type="text" placeholder="INV-0001" />
+                    <button id="generateInvoiceBtn" class="btn btn-primary" type="button">
+                      + Generate
+                    </button>
+                  </div>
+                </label>
+                <label>
+                  Terms of Payment
+                  <input
+                    id="termsOfPayment"
+                    type="text"
+                    placeholder="e.g. 30% advance, 70% before shipment"
+                  />
+                </label>
+              </div>
+
+              <div class="section-top-row section-subhead">
+                <h4>Custom Fields</h4>
+                <button id="addCustomFieldBtn" class="btn btn-subtle" type="button">
+                  + Add Custom Field
+                </button>
+              </div>
+              <div id="customFields" class="dynamic-list"></div>
+
+              <div class="form-grid two-col">
+                <label>
+                  Issue Date
+                  <input id="issueDate" type="date" />
+                </label>
+                <label>
+                  Due Date (Optional)
+                  <input id="dueDate" type="date" />
+                </label>
+              </div>
+
+              <div class="form-grid">
+                <label>
+                  Currency
+                  <select id="currency">
+                    <option value="USD">$ USD - US Dollar</option>
+                    <option value="CAD">$ CAD - Canadian Dollar</option>
+                    <option value="EUR">€ EUR - Euro</option>
+                    <option value="GBP">£ GBP - British Pound</option>
+                    <option value="AUD">$ AUD - Australian Dollar</option>
+                    <option value="INR">₹ INR - Indian Rupee</option>
+                  </select>
+                </label>
+                <label>
+                  End Message (Optional)
+                  <textarea id="endMessage" rows="3" placeholder="Optional"></textarea>
+                </label>
+              </div>
+            </section>
+
+            <section class="form-section" data-section="payment">
+              <h3>Payment Details</h3>
+              <div class="section-divider"></div>
+
+              <div class="payment-add-row">
+                <button
+                  class="btn btn-subtle payment-add-btn"
+                  data-method="bank"
+                  type="button"
+                >
+                  <i data-lucide="landmark"></i>
+                  <span>Add Bank</span>
+                </button>
+                <button
+                  class="btn btn-subtle payment-add-btn"
+                  data-method="paypal"
+                  type="button"
+                >
+                  <i data-lucide="letter-text"></i>
+                  <span>Add PayPal</span>
+                </button>
+                <button
+                  class="btn btn-subtle payment-add-btn"
+                  data-method="crypto"
+                  type="button"
+                >
+                  <i data-lucide="bitcoin"></i>
+                  <span>Add Crypto</span>
+                </button>
+                <button
+                  class="btn btn-subtle payment-add-btn"
+                  data-method="custom"
+                  type="button"
+                >
+                  <i data-lucide="wallet"></i>
+                  <span>Add Custom Payment</span>
+                </button>
+              </div>
+
+              <div id="paymentMethodsContainer" class="payment-cards"></div>
+            </section>
+
+            <section class="form-section" data-section="company">
+              <h3>Company</h3>
+              <div class="section-divider"></div>
+
+              <div class="form-grid">
+                <label>
+                  Company Name
+                  <input id="companyName" type="text" placeholder="Company Name" />
+                </label>
+                <label>
+                  Address
+                  <input id="companyAddress" type="text" placeholder="Address" />
+                </label>
+              </div>
+
+              <div class="form-grid two-col">
+                <label>
+                  Email
+                  <input id="companyEmail" type="email" placeholder="Email" />
+                </label>
+                <label>
+                  Phone
+                  <input id="companyPhone" type="text" placeholder="Phone" />
+                </label>
+              </div>
+
+              <h3 class="subhead">Branding &amp; Authorization</h3>
+              <div class="section-divider"></div>
+
+              <div class="upload-grid">
+                <div class="upload-field">
+                  <h4>Company Logo</h4>
+                  <input
+                    id="companyLogoInput"
+                    type="file"
+                    accept="image/*"
+                    class="visually-hidden"
+                  />
+                  <button
+                    id="companyLogoDropzone"
+                    class="upload-dropzone"
+                    type="button"
+                  >
+                    <img
+                      id="companyLogoPreview"
+                      class="upload-preview hidden"
+                      alt="Company logo preview"
+                    />
+                    <div class="upload-placeholder" id="companyLogoPlaceholder">
+                      <i data-lucide="image-up"></i>
+                      <p>Click to upload company logo</p>
+                      <small>(Max 2MB)</small>
+                    </div>
+                  </button>
+                </div>
+
+                <div class="upload-field">
+                  <h4>Signature/Stamp</h4>
+                  <input
+                    id="companySignatureInput"
+                    type="file"
+                    accept="image/*"
+                    class="visually-hidden"
+                  />
+                  <button
+                    id="companySignatureDropzone"
+                    class="upload-dropzone"
+                    type="button"
+                  >
+                    <img
+                      id="companySignaturePreview"
+                      class="upload-preview hidden"
+                      alt="Signature preview"
+                    />
+                    <div class="upload-placeholder" id="companySignaturePlaceholder">
+                      <i data-lucide="signature"></i>
+                      <p>Click to upload signature/stamp</p>
+                      <small>(Max 2MB)</small>
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </section>
+          </form>
+        </section>
+
+        <section class="panel panel-preview" aria-label="Invoice preview">
+          <header class="panel-header">
+            <h2>Invoice Preview</h2>
+            <div class="actions">
+              <button id="saveBtn" class="btn btn-primary" type="button">
+                Save Invoice
+              </button>
+              <button id="pdfBtn" class="btn btn-primary" type="button">
+                Download PDF
+              </button>
+            </div>
+          </header>
+
+          <article class="invoice-sheet" id="invoiceSheet">
+            <div class="sheet-top">
+              <section>
+                <img id="previewCompanyLogo" class="preview-logo hidden" alt="Company logo" />
+                <h3 id="previewCompanyName">Your Company</h3>
+                <p id="previewCompanyAddress">123 Business Ave.</p>
+                <p id="previewCompanyEmail">contact@company.com</p>
+                <p id="previewCompanyPhone">(555) 123-4567</p>
+              </section>
+              <section class="align-right">
+                <h3>INVOICE</h3>
+                <p>
+                  Invoice #:
+                  <strong id="previewInvoiceNumber">INV-230586-486</strong>
+                </p>
+                <p>
+                  Issue Date:
+                  <strong id="previewIssueDate">February 11, 2026</strong>
+                </p>
+                <p>
+                  Due Date:
+                  <strong id="previewDueDate">February 26, 2026</strong>
+                </p>
+              </section>
+            </div>
+
+            <section class="issued-to">
+              <p class="muted">Issued To:</p>
+              <p>
+                <strong id="previewCustomerName">Customer</strong>
+                <span>|</span>
+                <strong id="previewCustomerCompany">Company Name</strong>
+              </p>
+              <p id="previewCustomerIdentifier">ID: -</p>
+              <p id="previewCustomerEmail">customer@company.com</p>
+              <p id="previewCustomerPhone">Phone: -</p>
+              <p id="previewCustomerAddress">Customer billing address</p>
+              <p id="previewCustomerZip">Zip: -</p>
+            </section>
+
+            <table class="preview-table">
+              <thead>
+                <tr>
+                  <th id="previewHeadService">Service</th>
+                  <th id="previewHeadSecond">Hours</th>
+                  <th id="previewHeadThird">Rate (/Hour)</th>
+                  <th id="previewHeadAmount">Amount</th>
+                </tr>
+              </thead>
+              <tbody id="previewItems"></tbody>
+            </table>
+
+            <section class="totals">
+              <p>
+                <span>Subtotal:</span>
+                <strong id="previewSubtotal">$0.00</strong>
+              </p>
+              <p>
+                <span id="previewTaxLabel">Tax (0%):</span>
+                <strong id="previewTax">$0.00</strong>
+              </p>
+              <p>
+                <span>Shipping:</span>
+                <strong id="previewShipping">$0.00</strong>
+              </p>
+              <p>
+                <span>Discount:</span>
+                <strong id="previewDiscount">-$0.00</strong>
+              </p>
+              <p class="grand-total">
+                <span>Total:</span>
+                <strong id="previewTotal">$0.00</strong>
+              </p>
+            </section>
+
+            <section class="meta-block" id="previewCustomFieldsBlock">
+              <h4>Custom Fields</h4>
+              <dl class="custom-field-list" id="previewCustomFields"></dl>
+            </section>
+
+            <section class="payment-preview">
+              <h4>Payment Details</h4>
+              <p>
+                Terms:
+                <strong id="previewTermsOfPayment">Due within 15 days</strong>
+              </p>
+              <div id="previewPaymentMethods" class="payment-preview-methods"></div>
+            </section>
+
+            <section class="meta-block" id="previewEndMessageBlock">
+              <h4>End Message</h4>
+              <p id="previewEndMessage">Thanks for your business.</p>
+            </section>
+
+            <section class="signature-preview hidden" id="previewSignatureBlock">
+              <p class="muted">Authorized Signature</p>
+              <img id="previewSignatureImage" alt="Signature" />
+            </section>
+          </article>
+
+          <p class="status" id="statusMessage" role="status" aria-live="polite"></p>
+        </section>
+      </main>
+
+      <section id="contractFeature" class="contract-feature hidden" aria-label="Contract generator">
+        <header class="feature-header">
+          <h2>Free Contract Generator</h2>
+          <p>
+            Build a clean service contract with live preview and digital signing
+            for both provider and client.
+          </p>
+          <p class="feature-note">
+            Covers all Canadian provinces and territories. Template output is
+            professional but not legal advice.
+          </p>
+        </header>
+
+        <div class="contract-workspace">
+          <section class="panel panel-form contract-form-panel" aria-label="Contract details">
+            <header class="panel-header">
+              <h2>Contract Details</h2>
+            </header>
+
+            <form id="contractForm" novalidate>
+              <div class="form-grid two-col">
+                <label>
+                  Governing Province/Territory (Canada)
+                  <select id="contractProvince">
+                    <option value="Ontario">Ontario</option>
+                    <option value="British Columbia">British Columbia</option>
+                    <option value="Alberta">Alberta</option>
+                    <option value="Quebec">Quebec</option>
+                    <option value="Manitoba">Manitoba</option>
+                    <option value="Saskatchewan">Saskatchewan</option>
+                    <option value="Nova Scotia">Nova Scotia</option>
+                    <option value="New Brunswick">New Brunswick</option>
+                    <option value="Newfoundland and Labrador">
+                      Newfoundland and Labrador
+                    </option>
+                    <option value="Prince Edward Island">Prince Edward Island</option>
+                    <option value="Yukon">Yukon</option>
+                    <option value="Northwest Territories">Northwest Territories</option>
+                    <option value="Nunavut">Nunavut</option>
+                  </select>
+                </label>
+                <label>
+                  Start Date
+                  <input id="contractStartDate" type="date" />
+                </label>
+                <label>
+                  Business Name
+                  <input
+                    id="contractBusinessName"
+                    type="text"
+                    placeholder="Northside Plumbing Inc."
+                  />
+                </label>
+                <label>
+                  Client Name
+                  <input id="contractClientName" type="text" placeholder="Avery Lee" />
+                </label>
+                <label>
+                  Client Email
+                  <input
+                    id="contractClientEmail"
+                    type="email"
+                    placeholder="client@example.com"
+                  />
+                </label>
+                <label>
+                  Client Phone (SMS)
+                  <input
+                    id="contractClientPhone"
+                    type="text"
+                    placeholder="+1 416 555 0101"
+                  />
+                </label>
+                <label>
+                  Service Type
+                  <input
+                    id="contractServiceType"
+                    type="text"
+                    placeholder="Plumbing services"
+                  />
+                </label>
+                <label>
+                  Project Fee (CAD)
+                  <input
+                    id="contractProjectFee"
+                    type="number"
+                    inputmode="decimal"
+                    min="0"
+                    step="0.01"
+                    placeholder="450"
+                  />
+                </label>
+                <label>
+                  Payment Due (Days)
+                  <input
+                    id="contractPaymentDueDays"
+                    type="number"
+                    inputmode="numeric"
+                    min="0"
+                    step="1"
+                    placeholder="14"
+                  />
+                </label>
+                <label>
+                  Included Revisions
+                  <input
+                    id="contractIncludedRevisions"
+                    type="number"
+                    inputmode="numeric"
+                    min="0"
+                    step="1"
+                    placeholder="1"
+                  />
+                </label>
+              </div>
+
+              <div class="form-grid">
+                <label>
+                  Scope Notes (Optional)
+                  <textarea
+                    id="contractScopeNotes"
+                    rows="3"
+                    placeholder="Any extra terms or deliverables."
+                  ></textarea>
+                </label>
+              </div>
+
+              <section class="contract-signing">
+                <h3>Digital Signing</h3>
+                <p class="helper">
+                  Choose typed or drawn signature for each party, then click sign.
+                </p>
+
+                <div class="contract-signers">
+                  <article class="signer-card">
+                    <h4>Service Provider</h4>
+                    <label>
+                      Signer Name
+                      <input id="providerSignerName" type="text" placeholder="Jordan Patel" />
+                    </label>
+                    <div class="segmented signer-mode" id="providerSignModeControl">
+                      <button type="button" class="seg-btn active" data-role="provider" data-mode="draw">
+                        Draw
+                      </button>
+                      <button type="button" class="seg-btn" data-role="provider" data-mode="type">
+                        Type
+                      </button>
+                    </div>
+                    <div id="providerTypedWrap" class="signer-typed-wrap hidden">
+                      <input id="providerTypedSignature" type="text" placeholder="Type signature" />
+                    </div>
+                    <div id="providerDrawWrap" class="signer-draw-wrap">
+                      <p class="helper">Draw with mouse, finger, or touchpad.</p>
+                      <canvas id="providerSignaturePad" class="signature-pad"></canvas>
+                    </div>
+                    <div class="signer-actions">
+                      <button id="providerClearPadBtn" class="btn btn-subtle" type="button">
+                        Clear Pad
+                      </button>
+                      <button id="providerSignBtn" class="btn btn-primary" type="button">
+                        Sign as Provider
+                      </button>
+                    </div>
+                    <p class="helper" id="providerSignStatus">Not signed yet</p>
+                  </article>
+
+                  <article class="signer-card">
+                    <h4>Client</h4>
+                    <label>
+                      Signer Name
+                      <input id="clientSignerName" type="text" placeholder="Avery Lee" />
+                    </label>
+                    <div class="segmented signer-mode" id="clientSignModeControl">
+                      <button type="button" class="seg-btn active" data-role="client" data-mode="draw">
+                        Draw
+                      </button>
+                      <button type="button" class="seg-btn" data-role="client" data-mode="type">
+                        Type
+                      </button>
+                    </div>
+                    <div id="clientTypedWrap" class="signer-typed-wrap hidden">
+                      <input id="clientTypedSignature" type="text" placeholder="Type signature" />
+                    </div>
+                    <div id="clientDrawWrap" class="signer-draw-wrap">
+                      <p class="helper">Draw with mouse, finger, or touchpad.</p>
+                      <canvas id="clientSignaturePad" class="signature-pad"></canvas>
+                    </div>
+                    <div class="signer-actions">
+                      <button id="clientClearPadBtn" class="btn btn-subtle" type="button">
+                        Clear Pad
+                      </button>
+                      <button id="clientSignBtn" class="btn btn-primary" type="button">
+                        Sign as Client
+                      </button>
+                    </div>
+                    <p class="helper" id="clientSignStatus">Not signed yet</p>
+                  </article>
+                </div>
+              </section>
+
+              <section class="contract-remote">
+                <h3>Remote Client Signing</h3>
+                <p class="helper">
+                  Export a client-ready copy to share.
+                </p>
+                <div class="remote-actions">
+                  <button id="exportContractForClientBtn" class="btn btn-subtle" type="button">
+                    Export Client PDF
+                  </button>
+                </div>
+              </section>
+            </form>
+          </section>
+
+          <section class="panel panel-preview contract-preview-panel" aria-label="Contract preview">
+            <header class="panel-header">
+              <h2>Contract Preview</h2>
+              <div class="actions">
+                <button id="contractPdfBtn" class="btn btn-primary" type="button">
+                  Download Contract PDF
+                </button>
+              </div>
+            </header>
+
+            <article class="invoice-sheet contract-sheet" id="contractSheet">
+              <h3>SERVICE AGREEMENT</h3>
+              <p id="contractPreviewDateLine">
+                Date: February 12, 2026 | Province: Ontario
+              </p>
+              <p id="contractPreviewIntro">
+                This Service Agreement is between Northside Plumbing Inc. and Avery Lee.
+              </p>
+
+              <section class="contract-summary">
+                <p><span>Service:</span> <strong id="contractPreviewServiceType">Plumbing services</strong></p>
+                <p><span>Start Date:</span> <strong id="contractPreviewStartDate">February 12, 2026</strong></p>
+                <p><span>Project Fee:</span> <strong id="contractPreviewProjectFee">CA$450.00</strong></p>
+                <p><span>Payment Due:</span> <strong id="contractPreviewPaymentDue">14 days</strong></p>
+                <p><span>Included Revisions:</span> <strong id="contractPreviewRevisions">1</strong></p>
+              </section>
+
+              <ol class="contract-clauses" id="contractClausesList"></ol>
+
+              <section class="contract-signature-preview">
+                <article class="contract-sign-box">
+                  <p class="muted">Service Provider Signature</p>
+                  <p id="contractPreviewProviderSigner">Signer: -</p>
+                  <img
+                    id="contractPreviewProviderDrawn"
+                    class="contract-sign-image hidden"
+                    alt="Provider drawn signature"
+                  />
+                  <p id="contractPreviewProviderTyped" class="contract-sign-typed hidden"></p>
+                  <p id="contractPreviewProviderStatus" class="helper">Not signed yet</p>
+                </article>
+                <article class="contract-sign-box">
+                  <p class="muted">Client Signature</p>
+                  <p id="contractPreviewClientSigner">Signer: -</p>
+                  <img
+                    id="contractPreviewClientDrawn"
+                    class="contract-sign-image hidden"
+                    alt="Client drawn signature"
+                  />
+                  <p id="contractPreviewClientTyped" class="contract-sign-typed hidden"></p>
+                  <p id="contractPreviewClientStatus" class="helper">Not signed yet</p>
+                </article>
+              </section>
+            </article>
+
+            <p class="status" id="contractStatusMessage" role="status" aria-live="polite"></p>
+          </section>
+        </div>
+      </section>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf-autotable@3.8.2/dist/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lucide@0.468.0/dist/umd/lucide.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>

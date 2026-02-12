@@ -1,0 +1,16 @@
+{
+  "name": "invoicegennow",
+  "version": "1.0.0",
+  "private": true,
+  "description": "InvoiceGenNow backend + frontend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "better-sqlite3": "^11.7.2",
+    "express": "^4.21.2",
+    "nodemailer": "^6.10.1"
+  }
+}

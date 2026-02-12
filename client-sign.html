@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>InvoiceGenNow - Client Signature</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&family=Space+Grotesk:wght@500;700&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="client-sign.css" />
+  </head>
+  <body>
+    <main class="shell">
+      <header class="hero">
+        <h1>Client Signature Portal</h1>
+        <p>
+          Review your agreement details below. You can sign as the client only.
+          Contract terms are locked.
+        </p>
+      </header>
+
+      <section class="panel" id="contractPanel">
+        <header class="panel-header">
+          <h2>Service Agreement</h2>
+          <p id="contractMeta">Loading contract...</p>
+        </header>
+
+        <article class="panel-body">
+          <div class="summary-grid">
+            <p><span>Business:</span> <strong id="viewBusiness">-</strong></p>
+            <p><span>Client:</span> <strong id="viewClient">-</strong></p>
+            <p><span>Service:</span> <strong id="viewService">-</strong></p>
+            <p><span>Start Date:</span> <strong id="viewStartDate">-</strong></p>
+            <p><span>Project Fee:</span> <strong id="viewFee">-</strong></p>
+            <p><span>Payment Due:</span> <strong id="viewDue">-</strong></p>
+            <p><span>Revisions:</span> <strong id="viewRevisions">-</strong></p>
+            <p><span>Governing Law:</span> <strong id="viewProvince">-</strong></p>
+          </div>
+
+          <h3>Contract Clauses</h3>
+          <ol id="viewClauses" class="clauses"></ol>
+
+          <section class="sign-box">
+            <h3>Client Signature</h3>
+            <label>
+              Signer Name
+              <input id="signerName" type="text" placeholder="Your full name" />
+            </label>
+
+            <div class="segmented" id="signModeControl">
+              <button type="button" class="seg-btn active" data-mode="draw">Draw</button>
+              <button type="button" class="seg-btn" data-mode="type">Type</button>
+            </div>
+
+            <div id="typedWrap" class="hidden">
+              <input id="typedSignature" type="text" placeholder="Type your signature" />
+            </div>
+
+            <div id="drawWrap">
+              <p class="helper">Draw with mouse, finger, or touchpad.</p>
+              <canvas id="signaturePad" class="signature-pad"></canvas>
+            </div>
+
+            <div class="actions">
+              <button id="clearPadBtn" class="btn btn-subtle" type="button">Clear Pad</button>
+              <button id="signBtn" class="btn btn-primary" type="button">Sign Contract</button>
+            </div>
+
+            <p id="signedState" class="helper">Status: Pending signature</p>
+          </section>
+        </article>
+      </section>
+
+      <p id="statusMessage" class="status" role="status" aria-live="polite"></p>
+    </main>
+
+    <script src="client-sign.js"></script>
+  </body>
+</html>
